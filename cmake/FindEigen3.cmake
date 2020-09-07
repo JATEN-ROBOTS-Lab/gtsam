@@ -15,6 +15,9 @@
 # Copyright (c) 2009 Benoit Jacob <jacob.benoit.1@gmail.com>
 # Redistribution and use is allowed according to the terms of the 2-clause BSD license.
 
+set(EIGEN3_ROOT "$ENV{EIGEN3_ROOT}")
+set(EIGEN3_INCLUDE_DIR "$ENV{EIGEN3_INCLUDE_DIR}")
+
 if(NOT Eigen3_FIND_VERSION)
   if(NOT Eigen3_FIND_VERSION_MAJOR)
     set(Eigen3_FIND_VERSION_MAJOR 2)
@@ -62,10 +65,15 @@ if (EIGEN3_INCLUDE_DIR)
 else (EIGEN3_INCLUDE_DIR)
 
   find_path(EIGEN3_INCLUDE_DIR NAMES signature_of_eigen3_matrix_library
+      HINTS
+        ENV EIGEN3_ROOT 
+        ENV EIGEN3_ROOT_DIR
       PATHS
-      ${CMAKE_INSTALL_PREFIX}/include
-      ${KDE4_INCLUDE_DIR}
-      PATH_SUFFIXES eigen3 eigen
+        ${CMAKE_INSTALL_PREFIX}/include
+        ${KDE4_INCLUDE_DIR}
+      PATH_SUFFIXES
+        eigen3
+        eigen
     )
 
   if(EIGEN3_INCLUDE_DIR)
@@ -79,3 +87,10 @@ else (EIGEN3_INCLUDE_DIR)
 
 endif(EIGEN3_INCLUDE_DIR)
 
+string(ASCII 27 Esc)
+set(PRT_WRN "${Esc}[0;33m")
+set(PRT_RST "${Esc}[0m")
+message("${PRT_WRN}EIGEN3_ROOT=${EIGEN3_ROOT}${PRT_RST}")
+message("${PRT_WRN}EIGEN3_INCLUDE_DIR=${EIGEN3_INCLUDE_DIR}${PRT_RST}")
+message("${PRT_WRN}ENV EIGEN3_ROOT=$ENV{EIGEN3_ROOT}${PRT_RST}")
+message("${PRT_WRN}ENV EIGEN3_INCLUDE_DIR=$ENV{EIGEN3_INCLUDE_DIR}${PRT_RST}")
